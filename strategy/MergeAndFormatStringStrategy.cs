@@ -15,7 +15,7 @@ public class MergeAndFormatStringStrategy: IStrategy<string, List<string>>
         var clean = string.Join(separator, data
             .Select(word => word.Trim().ToLower()));
         
-        return StringUtils.MakeFirstLetterLarge(clean);
+        return clean.MakeFirstLetterLarge();
     }
 
     public override bool Equals(object? obj)
