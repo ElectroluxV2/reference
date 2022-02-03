@@ -1,3 +1,5 @@
+using reference.utils;
+
 namespace reference.strategy;
 
 public class MergeAndFormatStringStrategy: IStrategy<string, List<string>>
@@ -10,11 +12,10 @@ public class MergeAndFormatStringStrategy: IStrategy<string, List<string>>
 
     public string Execute(List<string> data)
     {
-        var clean = data
-            .Select(word => word.Trim().ToLower())
-            .Aggregate((current, next) => $"{current}{separator}{next}");
+        var clean = string.Join(separator, data
+            .Select(word => word.Trim().ToLower()));
         
-        return clean.Length > 1 ? $"{clean[..1].ToUpper()}{clean[1..]}" : clean;
+        return StringUtils.MakeFirstLetterLarge(clean);
     }
 
     public override bool Equals(object? obj)

@@ -12,12 +12,9 @@ public class AlternatingCaseStringStrategy: IStrategy<string, List<string>>
     public string Execute(List<string> data)
     {
         var counter = 0;
-        var charArray = data
-            .Select(word => word.Trim().ToLower())
-            .Aggregate((current, next) => $"{current} {next}")
-            .Select(c => ModifyCharacterIfNeeded(ref counter, c))
-            .ToArray();
-        
+        var charArray = string.Join(" ", data.Select(word => word.Trim().ToLower()))
+            .Select(c => ModifyCharacterIfNeeded(ref counter, c)).ToArray();
+
         return string.Concat(charArray);
     }
 }

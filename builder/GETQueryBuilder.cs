@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace reference.builder;
 
 public class GETQueryBuilder: HTTPQueryBuilder
@@ -11,23 +9,22 @@ public class GETQueryBuilder: HTTPQueryBuilder
 
     public override IQueryBuilder WithParameters(Dictionary<string, string> parameters)
     {
-        _getParameters = "?" + parameters
-            .Select(parameter => $"{parameter.Key}={parameter.Value}")
-            .Aggregate((current, next) => $"{current},{next}");
+        _getParameters = "?" + string.Join(",",
+            parameters.Select(parameter => string.Join("=", parameter.Key, parameter.Value)));
         return this;
     }
 
     public override string Build()
     {
-        var sb = new List<string>
+        var stringJoiner = new List<string>
         {
             "POST:",
             string.IsNullOrEmpty(_getParameters) ? RequestRoute : string.Concat(RequestRoute, _getParameters)
         };
 
-        if (!string.IsNullOrEmpty(AcceptedContentType)) sb.Add($"ACCEPTS:{AcceptedContentType}");
-        if (!string.IsNullOrEmpty(AcceptedResponseCode)) sb.Add($"REQUIRES:{AcceptedResponseCode}");
-        
-        return sb.Aggregate((current, next) => $"{current}|{next}");
+        if (!string.IsNullOrEmpty(AcceptedContentType)) stringJoiner.Add(string.Join( ":", "ACCEPTS", AcceptedContentType));
+        if (!string.IsNullOrEmpty(AcceptedResponseCode)) stringJoiner.Add(string.Join(":", "REQUIRES", AcceptedResponseCode));
+
+        return string.Join("|", stringJoiner);
     }
 }

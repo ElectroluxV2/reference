@@ -24,7 +24,7 @@ Console.WriteLine(new POSTQueryBuilder("http://localhost")
 Console.WriteLine(new POSTQueryBuilder("http://localhost")
     .WithAcceptedContentType("text/html")
     .WithAcceptedResponseCode("200")
-    .WithParameters(new Dictionary<string, string>()
+    .WithParameters(new Dictionary<string, string>
     {
         {"param1", "value1"},
         {"param2", "value2"}
@@ -35,7 +35,7 @@ Console.WriteLine(new POSTQueryBuilder("http://localhost")
 Console.WriteLine(new GETQueryBuilder("http://localhost")
     .WithAcceptedContentType("text/html")
     // .WithAcceptedResponseCode("200")
-    .WithParameters(new Dictionary<string, string>()
+    .WithParameters(new Dictionary<string, string>
     {
         {"param1", "value1"},
         {"param2", "value2"}
