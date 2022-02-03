@@ -1,19 +1,34 @@
 namespace reference.strategy;
 
-public class MergeAndFormatTextStrategy: IStrategy<string, List<string>>
+public class MergeAndFormatStringStrategy: IStrategy<string, List<string>>
 {
-    private readonly string _separator;
-    public MergeAndFormatTextStrategy(string separator = " ")
+    readonly string separator;
+    public MergeAndFormatStringStrategy(string separator = " ")
     {
-        _separator = separator;
+        this.separator = separator;
     }
 
     public string Execute(List<string> data)
     {
         var clean = data
             .Select(word => word.Trim().ToLower())
-            .Aggregate((current, next) => $"{current}{_separator}{next}");
+            .Aggregate((current, next) => $"{current}{separator}{next}");
         
-        return clean.Length > 1 ? $"{clean.Substring(0, 1).ToUpper()}{clean.Substring(1)}" : clean;
+        return clean.Length > 1 ? $"{clean[..1].ToUpper()}{clean[1..]}" : clean;
+    }
+
+    public override bool Equals(object? obj)
+    {
+        return obj != null && Equals(obj as MergeAndFormatStringStrategy);
+    }
+
+    public bool Equals(MergeAndFormatStringStrategy? other)
+    {
+        return separator.Equals(other?.separator);
+    }
+
+    public override int GetHashCode()
+    {
+        return separator.GetHashCode();
     }
 }
