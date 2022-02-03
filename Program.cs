@@ -1,4 +1,5 @@
 ﻿using reference.builder;
+using reference.observer;
 using reference.strategy;
 
 var context = new Context<string, List<string>>();
@@ -42,3 +43,21 @@ Console.WriteLine(new GETQueryBuilder("http://localhost")
         
     })
     .Build());
+    
+/////////////////////////////////////////////////////////
+
+var progress = new Subject<int>();
+
+
+var observer = (int value) =>
+{
+    Console.WriteLine($"Got value {value}");
+};
+
+progress.Attach(observer);
+progress.Next(1);
+progress.Next(2);
+progress.Detach(observer);
+progress.Next(3);
+
+
